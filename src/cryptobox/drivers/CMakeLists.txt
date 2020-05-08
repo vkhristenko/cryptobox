@@ -1,0 +1,7 @@
+file (GLOB SOURCES *.cpp)
+foreach (SOURCE ${SOURCES})
+    get_filename_component(EXE ${SOURCE} NAME_WE)
+    list(APPEND EXECS ${EXE})
+    add_executable(${EXE} ${SOURCES})
+    target_link_libraries(${EXE})
+endforeach(SOURCE)
