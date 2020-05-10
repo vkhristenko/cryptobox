@@ -12,7 +12,7 @@ void print(std::vector<unsigned char> const& v) {
 
 int main() {
     // simple test for the very basic functionality: create/sign/verify
-    auto hsm = std::make_shared<cryptobox::HSM>();
+    auto hsm = std::make_shared<cryptobox::HSM>("default.crb");
 
     // create
     auto handle = hsm->Create();

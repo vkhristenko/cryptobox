@@ -1,16 +1,12 @@
 #ifndef cryptobox_core_HSM_hpp
 #define cryptobox_core_HSM_hpp
 
-#include <vector>
 #include <string>
-#include <unordered_map>
-#include <tuple>
 #include <optional>
 
-namespace cryptobox {
+#include "cryptobox/core/Common.hpp"
 
-// TODO: remove in the future
-using Buffer = std::vector<unsigned char>;
+namespace cryptobox {
 
 class HSM {
 public:
@@ -22,11 +18,7 @@ public:
         Rejected
     };
 
-    using HandleT = uint32_t;
-    using EntryT = std::tuple<std::vector<unsigned char>, std::vector<unsigned char>>;
-    using HandleEntryMap = std::unordered_map<HandleT, EntryT>;
-
-    HSM();
+    HSM(std::string const&);
     ~HSM();
 
     // create a new entry
@@ -40,6 +32,7 @@ public:
 
 private:
     HandleEntryMap entries_;
+    std::string storagePath_;
 };
 
 }
