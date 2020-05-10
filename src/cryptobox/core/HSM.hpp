@@ -10,8 +10,7 @@
 namespace cryptobox {
 
 // TODO: remove in the future
-using Message = std::string;
-using SignedMessage = std::string;
+using Buffer = std::vector<unsigned char>;
 
 class HSM {
 public:
@@ -34,10 +33,10 @@ public:
     std::optional<HandleT> Create();
 
     // sign
-    std::optional<SignedMessage> Sign(HandleT, Message);
+    std::optional<Buffer> Sign(HandleT, Buffer const&);
 
     // verify
-    std::optional<Status> Verify(HandleT, SignedMessage);
+    std::optional<std::pair<Status, Buffer>> Verify(HandleT, Buffer const&);
 
 private:
     HandleEntryMap entries_;
