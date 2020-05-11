@@ -32,12 +32,16 @@ Key Handle 3185867906 created
 ```
 
 Signing a msg
+- Input comes in in the form of text. Below is an example for 32byte string
+- Output is hex-encoded binary signed message.
 ```
 ./cryptobox --sign aaaaaaaabbbbbbbbccccccccdddddddd --handle 4129717526
 5fc21f7b503944e1ae759c2805348af22a75c6ddfe82cd99a39ba02cd80806ce67255dff66489fa39046ecc1ec28519e9ca5c74c2d5edf062439f309b11bdd016161616161616161626262626262626263636363636363636464646464646464
 ```
 
 Verifying a signature
+- Input: signed message with handle
+- Output rejection/acceptance
 ```
 ./cryptobox --verify 5fc21f7b503944e1ae759c2805348af22a75c6ddfe82cd99a39ba02cd80806ce67255dff66489fa39046ecc1ec28519e9ca5c74c2d5edf062439f309b11bdd016161616161616161626262626262626263636363636363636464646464646464 --handle 4129717526
 Verification: Accepted
