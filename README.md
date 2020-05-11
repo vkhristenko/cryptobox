@@ -1,4 +1,5 @@
 # Simple Cryptobox - Simple HSM like functionality 
+Employing `libsodium` for public/private key generation, signature and verification procedure. In particular, `libsodium` supports `curve25519` only with EdDSA for signature generation/authenticity verification.
 
 ## Requirements
 - `cmake` 3.8 and above
