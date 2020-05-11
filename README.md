@@ -15,6 +15,8 @@ cmake -DDCMAKE_PREFIX_PATH=$SODIUM_INSTALL ../
 make -j N
 ```
 
+the main executable is located in `build/src/cryptobox/drivers`. there is a rule for `install` target, but not used here for simplicity.
+
 ## Usage
 Key creation
 ```

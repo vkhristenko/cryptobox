@@ -46,7 +46,7 @@ void signMessage(std::ostream& out, uint32_t const handle, std::string const& ms
         out << '\n';
     } else {
         // ERROR
-        out << "Invalid handle provided...\n";
+        out << "ERROR: Invalid handle provided...\n";
     }
 }
 
@@ -70,7 +70,7 @@ void verifySignature(std::ostream& out,
             out << "Verification: Accepted\n";
     } else {
         // ERROR
-        out << "Invalid handle provided...\n";
+        out << "ERROR: Invalid handle provided...\n";
     }
 }
 
@@ -86,9 +86,20 @@ int main(int argc, char** argv) {
         ("handle", po::value<uint32_t>(), "handle id")
     ;
 
+    // validate user input
     po::variables_map vm;
-    po::store(po::parse_command_line(argc, argv, desc), vm);
-    po::notify(vm);
+    try {
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        po::notify(vm);
+    } catch (std::exception const& e) {
+        std::cout << "ERROR: "<< e.what() << std::endl;
+        std::cout << "Terminating" << std::endl;
+        return 1;
+    } catch (...) {
+        std::cout << "ERROR: uncaught exception" << std::endl;
+        std::cout << "Terminating" << std::endl;
+        return 1;
+    }
 
     // help checked first
     if (vm.count("help")) {
@@ -118,11 +129,12 @@ int main(int argc, char** argv) {
             signMessage(std::cout, handle, msg);
             return 0;
         } else {
-            std::cout << "No Key Handle/Id was provided to sign the msg... \n";
+            std::cout << "WARNING: No Key Handle/Id was provided to sign the msg... \nTerminating...\n";
             return 0;
         }
     }
 
+    // verify
     if (vm.count("verify")) {
         auto signedMsg = vm["verify"].as<std::string>();
         if (vm.count("handle")) {
@@ -130,12 +142,12 @@ int main(int argc, char** argv) {
             verifySignature(std::cout, handle, signedMsg);
             return 0;
         } else {
-            std::cout << "No Key Handle/Id was provided to sign the msg... \n";
+            std::cout << "WARNING: No Key Handle/Id was provided to sign the msg... \nTerminating...\n";
             return 0;
         }
     }
 
-    std::cout << "None of the known options were provided...\n\n";
+    std::cout << "None of the known options were provided...\nTerminating\n";
     printHelp(std::cout, desc);
     return 0;
 }

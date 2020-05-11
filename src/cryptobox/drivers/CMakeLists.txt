@@ -7,3 +7,5 @@ foreach (SOURCE ${SOURCES})
     add_executable(${EXE} ${SOURCES})
     target_link_libraries(${EXE} ${Boost_LIBRARIES} cryptobox-core ${sodium_LIBRARY_RELEASE})
 endforeach(SOURCE)
+
+#install(TARGETS ${EXECS} RUNTIME DESTINATION ${PROJECT_BINARY_DIR})
