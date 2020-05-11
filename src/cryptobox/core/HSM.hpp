@@ -10,8 +10,6 @@ namespace cryptobox {
 
 class HSM {
 public:
-    // TODO: static_assert()
-
     // status for the verification of the signature
     enum Status {
         Accepted,
