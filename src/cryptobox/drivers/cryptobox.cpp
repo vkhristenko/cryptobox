@@ -62,9 +62,6 @@ void verifySignature(std::ostream& out,
         NULL, &bin_len, NULL);
     assert(bin_len>0 && "Hex to Bin length greater than 0");
     bin.resize(bin_len);
-    for (auto const c : bin)
-        printf("%c", c);
-    printf("\n");
 
     if (auto result = hsm.Verify(handle, bin); result.has_value()) {
         if (auto status = result.value().first; status == crb::HSM::Rejected)
@@ -99,6 +96,12 @@ int main(int argc, char** argv) {
         return 0;
     }
 
+    // check sodium
+    if (sodium_init() == -1) {
+        std::cout << "Sodium is not initialized properly! aborting...\n";
+            return 1;
+    }
+
     // keys creation
     if (vm.count("create")) {
         auto nKeysToCreate = vm["create"].as<int>();
@@ -124,8 +127,6 @@ int main(int argc, char** argv) {
         auto signedMsg = vm["verify"].as<std::string>();
         if (vm.count("handle")) {
             auto handle = vm["handle"].as<uint32_t>();
-            std::cout << "will verify: " << signedMsg << " with handle " << handle
-                << "\n";
             verifySignature(std::cout, handle, signedMsg);
             return 0;
         } else {

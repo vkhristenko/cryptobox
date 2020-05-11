@@ -11,19 +11,13 @@ namespace cryptobox {
 HSM::HSM(std::string const& storagePath) 
     : storagePath_{storagePath}
 {
-    if (sodium_init() == -1) {
-        std::cout << "not initialized\n";
-    } else {        
-        std::cout << "initialized" << std::endl;
-    }
-
     // bring up the key store
-    //entries_ = std::move(io::retrieve(storagePath_));
+    entries_ = std::move(io::retrieve(storagePath_));
 }
 
 HSM::~HSM() {
     // dump the key store
-    //io::dump(storagePath_, entries_);
+    io::dump(storagePath_, entries_);
 }
 
 std::optional<HandleT> HSM::Create() {
@@ -72,8 +66,10 @@ std::optional<std::pair<HSM::Status, Buffer>> HSM::Verify(
         Status status = Accepted;
         auto const& pubKey = std::get<0>(iter->second);
         if (crypto_sign_open(msg.data(), &msgLen, 
-            signedMsg.data(), signedMsg.size(), pubKey.data()) != 0)
+            signedMsg.data(), signedMsg.size(), pubKey.data()) != 0) {
             status = Rejected;
+            return std::pair{status, msg};
+        }
         assert(msgLen > 0 && "Assert Msg Length After Verification is greated than 0");
         msg.resize(msgLen);
         return std::pair{status, msg};
